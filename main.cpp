@@ -3,6 +3,9 @@
 #include "Triangle.hpp"
 #include "Vector.hpp"
 #include "global.hpp"
+
+#include "Rect.hpp"
+
 #include <chrono>
 
 // In the main function of the program, we create the scene (create objects and
@@ -14,6 +17,12 @@ int main(int argc, char** argv)
     Scene scene(1280, 960);
 
     MeshTriangle bunny("../models/bunny/bunny.obj");
+
+    Rect_xy rect(3, 8, 2, 12, 2);
+    // rect.m->m_type = REFLECTION_AND_REFRACTION;
+    // rect.m->m_color = Vector3f(255, 0, 0);
+    // rect.m->m_emission = Vector3f(1, 2. 100);
+    scene.Add(&rect);
 
     scene.Add(&bunny);
     scene.Add(std::make_unique<Light>(Vector3f(-20, 70, 20), 1));

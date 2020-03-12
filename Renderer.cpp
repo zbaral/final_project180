@@ -33,7 +33,7 @@ void Renderer::Render(const Scene& scene)
             // Also, don't forget to multiply both of them with the variable
             // *scale*, and x (horizontal) variable with the *imageAspectRatio*
             x = 2 * ((i + 0.5) / scene.width) - 1;
-            y = 1 - 2*((j+0.5) / scene.height);
+            y = 1 - 2 * ((j + 0.5) / scene.height);
             x *= scale * imageAspectRatio;
             y *= scale;
 

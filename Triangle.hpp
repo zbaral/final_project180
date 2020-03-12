@@ -219,9 +219,9 @@ inline Intersection Triangle::getIntersection(Ray ray)
     Vector3f s = ray.origin - v0;
     Vector3f s1 = crossProduct(ray.direction, e2);
     Vector3f s2 = crossProduct(s, e1);
-    t = dotProduct(s2, e2)/dotProduct(s1, e1);
-    u = dotProduct(s1, s)/dotProduct(s1, e1);
-    v = dotProduct(s2, ray.direction)/dotProduct(s1, e1);
+    t = dotProduct(s2, e2) / dotProduct(s1, e1);
+    u = dotProduct(s1, s) / dotProduct(s1, e1);
+    v = dotProduct(s2, ray.direction) / dotProduct(s1, e1);
     float barycen = u + v;
 
     if(!(u < 0 || u > 1 || v < 0 || v > 1 || barycen < 0 || barycen > 1 || t < 0)) {
