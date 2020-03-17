@@ -16,55 +16,60 @@ int main(int argc, char** argv)
 {
     Scene scene(1280, 960);
 
-    MeshTriangle bunny("../models/bunny/bunny.obj");
-
-    // Rect_xy rect(3, 8, 2, 12, 2);
-    // rect.m->m_type = REFLECTION_AND_REFRACTION;
-    // rect.m->m_color = Vector3f(255, 0, 0);
-    // rect.m->m_emission = Vector3f(1, 2, 100);
-    // scene.Add(&rect);
-
-
-	// Green right wall
+	// Red right wall
 	Rect_yz rect1(0, 555, 0, 555, 555);
-	// rect1.m->m_type = REFLECTION_AND_REFRACTION;
-	// rect1.m->m_color = Vector3f(0.12, 0.45, 0.15);
-	rect1.m->m_color = Vector3f(0, 1, 0);
-	// rect1.m->m_emission = Vector3f(1, 2, 100);
+	rect1.m->m_color = Vector3f(0.65, 0.05, 0.05);
+	rect1.m->Kd = 0.6;
+	rect1.m->Ks = 0;
+	rect1.m->specularExponent = 0;
 	scene.Add(&rect1);
 
-	// Red left wall
+	// Green left wall
 	Rect_yz rect2(0, 555, 0, 555, 0);
-	// rect2.m->m_type = REFLECTION_AND_REFRACTION;
-	rect2.m->m_color = Vector3f(0.65, 0.05, 0.05);
-	// rect2.m->m_emission = Vector3f(1, 2, 100);
+	rect2.m->m_color = Vector3f(0.12, 0.45, 0.15);
+	rect2.m->Kd = 0.6;
+	rect2.m->Ks = 0;
+	rect2.m->specularExponent = 0;
 	scene.Add(&rect2);
 
 	// Light
-	Rect_xz rect3(213, 343, 227, 332, 554);
-	// rect3.m->m_type = REFLECTION_AND_REFRACTION;
-	rect3.m->m_color = Vector3f(1, 1, 1);
-	// rect3.m->m_emission = Vector3f(1, 2, 100);
-	scene.Add(&rect3);
-	// scene.Add(std::make_unique<AreaLight>(Vector3f(278, 554 - 1, 279.5), 1, 130, 105));
+	// Rect_xz rect3(213, 343, 227, 332, 554);
+	// rect3.m->m_color = Vector3f(1, 1, 1);
+	// rect3.m->Kd = 0.6;
+	// rect3.m->Ks = 0;
+	// rect3.m->specularExponent = 0;
+	// scene.Add(&rect3);
+	// scene.Add(std::make_unique<AreaLight>(Vector3f(213, 554 - 0.01, 227), 1, 130, 105));
 	scene.Add(std::make_unique<Light>(Vector3f(278, 554 - 1, 279.5), 1));
+	// scene.Add(std::make_unique<Light>(Vector3f(277.5, 277.5, 277.5), 1));
 
 	// White floor
 	Rect_xz rect4(0, 555, 0, 555, 0);
-	// rect4.m->m_type = REFLECTION_AND_REFRACTION;
 	rect4.m->m_color = Vector3f(0.73, 0.73, 0.73);
-	// rect4.m->m_emission = Vector3f(1, 2, 100);
+	rect4.m->Kd = 0.6;
+	rect4.m->Ks = 0;
+	rect4.m->specularExponent = 0;
 	scene.Add(&rect4);
 
 	// White back wall
 	Rect_xy rect5(0, 555, 0, 555, 0);
-	// rect5.m->m_type = REFLECTION_AND_REFRACTION;
 	rect5.m->m_color = Vector3f(0.73, 0.73, 0.73);
-	// rect5.m->m_emission = Vector3f(1, 2, 100);
+	rect5.m->Kd = 0.6;
+	rect5.m->Ks = 0;
+	rect5.m->specularExponent = 0;
 	scene.Add(&rect5);
 
+	// White ceiling
+	Rect_xz rect6(0, 555, 0, 555, 555 - 5);
+	rect6.m->m_color = Vector3f(0.73, 0.73, 0.73);
+	rect6.m->Kd = 0.6;
+	rect6.m->Ks = 0;
+	rect6.m->specularExponent = 0;
+	scene.Add(&rect6);
 
 
+
+    // MeshTriangle bunny("../models/bunny/bunny.obj");
 
     // scene.Add(&bunny);
     // scene.Add(std::make_unique<Light>(Vector3f(-20, 70, 20), 1));
