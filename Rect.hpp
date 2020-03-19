@@ -31,7 +31,7 @@ public:
 			return inter;
 
 		Vector3f diff = point - ray.origin;
-		float dist = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z + diff.z);
+		float dist = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
 		Vector3f normal = ray.origin.z - z > 0 ? Vector3f(0, 0, 1) : Vector3f(0, 0, -1);
 
@@ -82,7 +82,7 @@ public:
 			return inter;
 
 		Vector3f diff = point - ray.origin;
-		float dist = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z + diff.z);
+		float dist = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
 		Vector3f normal = ray.origin.y - y > 0 ? Vector3f(0, 1, 0) : Vector3f(0, -1, 0);
 
@@ -133,7 +133,7 @@ public:
 			return inter;
 
 		Vector3f diff = point - ray.origin;
-		float dist = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z + diff.z);
+		float dist = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
 		Vector3f normal = ray.origin.x - x > 0 ? Vector3f(1, 0, 0) : Vector3f(-1, 0, 0);
 

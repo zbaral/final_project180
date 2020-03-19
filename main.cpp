@@ -5,6 +5,7 @@
 #include "global.hpp"
 
 #include "Rect.hpp"
+#include "Sphere.hpp"
 
 #include <chrono>
 
@@ -33,14 +34,15 @@ int main(int argc, char** argv)
 	scene.Add(&rect2);
 
 	// Light
-	// Rect_xz rect3(213, 343, 227, 332, 554);
-	// rect3.m->m_color = Vector3f(1, 1, 1);
-	// rect3.m->Kd = 0.6;
-	// rect3.m->Ks = 0;
-	// rect3.m->specularExponent = 0;
-	// scene.Add(&rect3);
-	// scene.Add(std::make_unique<AreaLight>(Vector3f(213, 554 - 0.01, 227), 1, 130, 105));
-	scene.Add(std::make_unique<Light>(Vector3f(278, 554 - 1, 279.5), 1));
+	Rect_xz rect3(213, 343, 227, 332, 555);
+	rect3.m->m_color = Vector3f(1, 1, 1);
+	rect3.m->Kd = 0.6;
+	rect3.m->Ks = 1;
+	rect3.m->specularExponent = 0;
+	scene.Add(&rect3);
+	scene.Add(std::make_unique<AreaLight>(Vector3f(213, 554, 227), 1, 130, 105));
+	// scene.Add(std::make_unique<Light>(Vector3f(278, 554, 279.5), 1));
+	scene.Add(std::make_unique<AreaLight>(Vector3f(213, 277.5, 227), 1, 130, 105));
 	// scene.Add(std::make_unique<Light>(Vector3f(277.5, 277.5, 277.5), 1));
 
 	// White floor
@@ -60,12 +62,17 @@ int main(int argc, char** argv)
 	scene.Add(&rect5);
 
 	// White ceiling
-	Rect_xz rect6(0, 555, 0, 555, 555 - 5);
+	Rect_xz rect6(0, 555, 0, 555, 555);
 	rect6.m->m_color = Vector3f(0.73, 0.73, 0.73);
 	rect6.m->Kd = 0.6;
 	rect6.m->Ks = 0;
 	rect6.m->specularExponent = 0;
 	scene.Add(&rect6);
+
+	// Sphere sph(Vector3f(277.5, 100, 277.5), 100);
+	// sph.m->m_type = REFLECTION_AND_REFRACTION;
+	// sph.m->ior = 1.8;
+	// scene.Add(&sph);
 
 
 
