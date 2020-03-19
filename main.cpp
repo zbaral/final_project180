@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 	scene.Add(&rect3);
 	scene.Add(std::make_unique<AreaLight>(Vector3f(213, 554, 227), 1, 130, 105));
 	// scene.Add(std::make_unique<Light>(Vector3f(278, 554, 279.5), 1));
-	scene.Add(std::make_unique<AreaLight>(Vector3f(213, 277.5, 227), 1, 130, 105));
+	// scene.Add(std::make_unique<AreaLight>(Vector3f(213, 277.5, 227), 1, 130, 105));
 	// scene.Add(std::make_unique<Light>(Vector3f(277.5, 277.5, 277.5), 1));
 
 	// White floor
