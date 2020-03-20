@@ -5,18 +5,20 @@
 #include "Rect.hpp"
 #include <math.h>
 
-class box : public Object {
+const float ZETA = 0.005;
+
+class Box : public Object {
 public:
     Bounds3 b;
     Material *m;
     float y_rotation;
-    box() {}
-    box(const Vector3f p1, Vector3f p2, float y_rot) 
+    Box() {}
+    Box(const Vector3f p1, Vector3f p2, float y_rot) 
     : y_rotation(y_rot), m(new Material()){
         b = Bounds3(p1, p2);
     }
 
-    Ray rotateRay(const Ray& ray){
+    Ray rotateRay(const Ray& ray) const{
         Vector3f center = (b.pMin+b.pMax)/2;
         Vector3f orig = (ray.origin - center);
         orig.x = orig.x * std::cos(y_rotation*M_PI / 180.) + orig.z * std::sin(y_rotation*M_PI / 180.);
@@ -31,44 +33,81 @@ public:
         r.t_max = ray.t_max;
         return r;
     }
+    Vector3f rotateBack(const Vector3f v){
+        Vector3f center = (b.pMin+b.pMax)/2;
+        Vector3f vec = (v - center);
+        vec.x = vec.x * std::cos(-y_rotation*M_PI / 180.) + vec.z * std::sin(-y_rotation*M_PI / 180.);
+        vec.z = - vec.x * std::sin(-y_rotation*M_PI / 180.) + vec.z * std::cos(-y_rotation*M_PI / 180.);
+        vec += center;
+        return vec;
+    }
 
     bool intersect(const Ray& ray) {
-        Ray r = rotateRay(ray);
+        Ray r = ray;//rotateRay(ray);
         std::array<int, 3> dirIsNeg;
         return b.IntersectP(r, r.direction_inv, dirIsNeg);
     }
-    bool intersect(const Ray& ray, float &, uint32_t &) {
-        return intersect(ray);
+    bool intersect(const Ray &ray, float &tnear, uint32_t &index) const {
+        Ray r = ray; //rotateRay(ray);
+        std::array<int, 3> dirIsNeg;
+        return b.IntersectP(r, r.direction_inv, dirIsNeg);
     }
     Intersection getIntersection(Ray _ray) {
         Intersection inter;
-        Ray r = rotateRay(_ray);
+        Ray r = _ray;//rotateRay(_ray);
 
-		float t = (z - r.origin.z) / r.direction.z;
-		if (t < 0)
-			return inter;
-		Vector3f point = r.origin + t * r.direction;
-		if (point.x < x0 || point.x > x1 || point.y < y0 || point.y > y1)
-			return inter;
+        float tMin = (b.pMin.x - r.origin.x) * r.direction_inv.x;
+        float tMax = (b.pMax.x - r.origin.x) * r.direction_inv.x;
+        if(tMin > tMax) std::swap(tMin, tMax);
+        float yMin = (b.pMin.y - r.origin.y) * r.direction_inv.y;
+        float yMax = (b.pMax.y - r.origin.y) * r.direction_inv.y;
+        if(yMin > yMax) std::swap(yMin, yMax);
+        float zMin = (b.pMin.z - r.origin.z) * r.direction_inv.z;
+        float zMax = (b.pMax.z - r.origin.z) * r.direction_inv.z;
+        if(zMin > zMax) std::swap(zMin, zMax);
 
-		Vector3f diff = point - r.origin;
+        if(tMin > yMax || yMin > tMax) return inter;
+        if(yMin > tMin) tMin = yMin;
+        if(yMax < tMax) tMax = yMax;
+
+        if(tMin > zMax || zMin > tMax) return inter;
+        if(zMin > tMin) tMin = zMin;
+        if(zMax < tMax) tMax = zMax;
+
+        Vector3f point = r.origin + tMin * r.direction;
+        Vector3f normal;
+        if(abs(point.x - b.pMin.x) < ZETA) normal = Vector3f(-1,0,0);
+        else if(abs(point.x - b.pMax.x) < ZETA) normal = Vector3f(1,0,0);
+        else if(abs(point.y - b.pMin.y) < ZETA) normal = Vector3f(0,-1,0);
+        else if(abs(point.y - b.pMax.y) < ZETA) normal = Vector3f(0,1,0);
+        else if(abs(point.z - b.pMin.z) < ZETA) normal = Vector3f(0,0,-1);
+        else if(abs(point.z - b.pMax.z) < ZETA) normal = Vector3f(0,0,1);
+
+        // point = rotateBack(point);
+        // normal = normalize(rotateBack(normal));
+        // normal = Vector3f(0,0,1);
+
+        Vector3f diff = point - r.origin;
 		float dist = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
-
-		Vector3f normal = r.origin.z - z > 0 ? Vector3f(0, 0, 1) : Vector3f(0, 0, -1);
 
         inter.obj = dynamic_cast<Object*>(this);
         inter.m = this->m;
         inter.happened = true;
         inter.normal = normal;
-        inter.coords = point + normal * Vector3f(0, 0, 0.001f);
+        inter.coords = point + normal * 0.001;
         inter.distance = dist;
 
         return inter;
     }
-    void getSurfaceProperties(const Vector3f &, const Vector3f &, const uint32_t &, const Vector2f &, Vector3f &, Vector2f &){
-
+    void getSurfaceProperties(const Vector3f &P, const Vector3f &I, const uint32_t &index, const Vector2f &uv, Vector3f &N, Vector2f &st) const{
+        // if(P.x == b.pMin.x) N = Vector3f(1,0,0);
+        // else if(P.x == b.pMax.x) N = Vector3f(-1,0,0);
+        // else if(P.y == b.pMin.y) N = Vector3f(0,1,0);
+        // else if(P.y == b.pMax.y) N = Vector3f(0,-1,0);
+        // else if(P.z == b.pMin.z) N = Vector3f(0,0,1);
+        // else if(P.z == b.pMax.z) N = Vector3f(0,0,-1);
     }
-    Vector3f evalDiffuseColor(const Vector2f &) {
+    Vector3f evalDiffuseColor(const Vector2f &st) const {
         return m->getColor();
     }
     Bounds3 getBounds() {return b;}

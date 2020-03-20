@@ -3,6 +3,9 @@
 #include "Bounds3.hpp"
 #include "Material.hpp"
 
+#ifndef RAYTRACING_RECT_H
+#define RAYTRACING_RECT_H
+
 class Rect_xy : public Object {
 public:
     float x0, x1, y0, y1, z;
@@ -23,7 +26,7 @@ public:
     Intersection getIntersection(Ray ray) {
         Intersection inter;
 
-		float t = (z - ray.origin.z) / ray.direction.z;
+		float t = (z - ray.origin.z) * ray.direction_inv.z;
 		if (t < 0)
 			return inter;
 		Vector3f point = ray.origin + t * ray.direction;
@@ -74,7 +77,7 @@ public:
     Intersection getIntersection(Ray ray) {
         Intersection inter;
 
-		float t = (y - ray.origin.y) / ray.direction.y;
+		float t = (y - ray.origin.y) * ray.direction_inv.y;
 		if (t < 0)
 			return inter;
 		Vector3f point = ray.origin + t * ray.direction;
@@ -125,7 +128,7 @@ public:
     Intersection getIntersection(Ray ray) {
         Intersection inter;
 
-		float t = (x - ray.origin.x) / ray.direction.x;
+		float t = (x - ray.origin.x) * ray.direction_inv.x;
 		if (t < 0)
 			return inter;
 		Vector3f point = ray.origin + t * ray.direction;
@@ -155,3 +158,5 @@ public:
     }
     Bounds3 getBounds() {return bounds;}
 };
+
+#endif //RAYTRACING_RECT_H

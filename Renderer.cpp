@@ -23,7 +23,7 @@ void Renderer::Render(const Scene& scene)
     // Vector3f eye_pos(-1, 5, 10);
     Vector3f eye_pos(278, 278, 850);
     int m = 0;
-	int spp = 50;
+	int spp = 1;
     for (uint32_t j = 0; j < scene.height; ++j) {
         for (uint32_t i = 0; i < scene.width; ++i) {
             // generate primary ray direction
