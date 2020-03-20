@@ -23,6 +23,7 @@ void Renderer::Render(const Scene& scene)
     // Vector3f eye_pos(-1, 5, 10);
     Vector3f eye_pos(278, 278, 850);
     int m = 0;
+	int spp = 50;
     for (uint32_t j = 0; j < scene.height; ++j) {
         for (uint32_t i = 0; i < scene.width; ++i) {
             // generate primary ray direction
@@ -40,7 +41,14 @@ void Renderer::Render(const Scene& scene)
 
             Vector3f dir = Vector3f(x, y, -1); // Don't forget to normalize this direction!
             dir = normalize(dir);
-            framebuffer[m++] = scene.castRay(Ray(eye_pos, dir), 0);
+			
+			Vector3f frame = Vector3f();
+			for (uint32_t k = 0; k < spp; k++) {
+				frame += scene.castRay(Ray(eye_pos, dir), 0);
+			}
+			frame = frame / spp;
+			framebuffer[m++] = frame;
+            // framebuffer[m++] = scene.castRay(Ray(eye_pos, dir), 0);
         }
         UpdateProgress(j / (float)scene.height);
     }

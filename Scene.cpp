@@ -188,7 +188,7 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
 	if (depth == 0 && hitColor.x != this->backgroundColor.x &&
 					  hitColor.y != this->backgroundColor.y &&
 					  hitColor.z != this->backgroundColor.z)
-		return hitColor / this->maxDepth;
+		return hitColor / (this->maxDepth + 1);
 
     return hitColor;
 }
