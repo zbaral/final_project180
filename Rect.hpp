@@ -42,7 +42,7 @@ public:
         inter.m = this->m;
         inter.happened = true;
         inter.normal = normal;
-        inter.coords = point + normal * Vector3f(0, 0, 0.001f);
+        inter.coords = point + normal * 0.001;
         inter.distance = dist;
 
         return inter;
@@ -93,7 +93,7 @@ public:
         inter.m = this->m;
         inter.happened = true;
         inter.normal = normal;
-        inter.coords = point + normal * Vector3f(0, 0.001f, 0);
+        inter.coords = point + normal * 0.001;
         inter.distance = dist;
 
         return inter;
@@ -144,7 +144,7 @@ public:
         inter.m = this->m;
         inter.happened = true;
         inter.normal = normal;
-        inter.coords = point + normal * Vector3f(0.001f, 0, 0);
+        inter.coords = point + normal * 0.001;
         inter.distance = dist;
 
         return inter;
