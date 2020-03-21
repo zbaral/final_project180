@@ -122,10 +122,6 @@ public:
 		Bounds3 b2 = Bounds3(rotatePoint(p2, y_rotation), rotatePoint(p7, y_rotation));
 		Bounds3 b3 = Bounds3(rotatePoint(p3, y_rotation), rotatePoint(p6, y_rotation));
 		Bounds3 b4 = Bounds3(rotatePoint(p4, y_rotation), rotatePoint(p5, y_rotation));
-		std::cout << "old pMin: " << b.pMin << '\n';
-		std::cout << "old pMax: " << b.pMax << '\n';
-		std::cout << "new pMin: " << Union(Union(b1, b2), Union(b3, b4)).pMin << '\n';
-		std::cout << "new pMax: " << Union(Union(b1, b2), Union(b3, b4)).pMax << "\n\n";
 		return Union(Union(b1, b2), Union(b3, b4));
 	}
 };
